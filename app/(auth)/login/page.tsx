@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import AuthFormLayout from "@/components/AuthFormLayout";
 
 export default function LoginPage() {
   const [password, setPassword] = useState("");
@@ -28,16 +29,9 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-white flex items-center justify-center px-4">
-      <div className="w-full max-w-md rounded-2xl border border-gray-200 p-6 shadow-sm">
-        <h1 className="text-2xl font-semibold text-[#769FCD]">Login</h1>
-        <p className="mt-2 text-sm text-gray-500">
-          Please enter your details
-        </p>
-
-        <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
-
-          <div className="space-y-2">
+    <AuthFormLayout title="Login" description="Please enter your details">
+      <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
+        <div className="space-y-2">
             <label htmlFor="email" className="text-sm font-medium text-gray-700">
               Email
             </label>
@@ -71,7 +65,7 @@ export default function LoginPage() {
             />
             <p
               className={`text-xs ${
-                isPasswordLongEnough ? "text-green-600" : "text-red-600"
+                isPasswordLongEnough ? "text-green-600" : "text-gray-300"
               }`}
             >
               At least 8 characters
@@ -86,8 +80,7 @@ export default function LoginPage() {
             </Link>
           </div>
 
-        
-          <button
+        <button
             type="submit"
             className="w-full rounded-lg bg-[#769FCD] px-4 py-2 text-sm font-medium text-white hover:bg-[#6a91c1]"
           >
@@ -135,8 +128,7 @@ export default function LoginPage() {
             </svg>
             Continue with Google
           </button>
-        </form>
-      </div>
-    </main>
+      </form>
+    </AuthFormLayout>
   );
 }

@@ -1,11 +1,10 @@
 import OtpVerification from "@/components/OtpVerification";
 
-export default function OtpPage() {
+export default function VerifyEmailPage() {
   return (
     <OtpVerification
-      title="Verify OTP"
+      title="Verify your email"
       description="Enter the code sent to your email."
-      showTerms
     />
   );
 }
