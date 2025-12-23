@@ -1,4 +1,23 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+
 export default function ForgotPasswordPage() {
+      const router = useRouter();
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    // call API here
+    const response = await fetch("/api/auth/forgot-password", {
+      method: "POST",
+      body: new FormData(event.currentTarget),
+    });
+
+    if (response.ok) {
+      router.push("/otp");
+    }
+  }
   return (
     <main className="min-h-screen bg-white flex items-center justify-center px-4">
       <div className="w-full max-w-md rounded-2xl border border-gray-200 p-6 shadow-sm">
@@ -9,7 +28,7 @@ export default function ForgotPasswordPage() {
           Enter your email to reset your password.
         </p>
 
-        <form className="mt-6 space-y-4">
+        <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-2">
             <label htmlFor="email" className="text-sm font-medium text-gray-700">
               Email
