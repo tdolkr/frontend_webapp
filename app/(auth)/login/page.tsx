@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-export default function SignUpPage() {
+export default function LoginPage() {
   const [password, setPassword] = useState("");
   const isPasswordLongEnough = password.length >= 8;
   const router = useRouter();
@@ -12,12 +13,10 @@ export default function SignUpPage() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
 
-    const response = await fetch("/api/auth/signup", {
+    const response = await fetch("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        organisation: formData.get("organisation"),
-        fullName: formData.get("fullName"),
         email: formData.get("email"),
         password: formData.get("password"),
       }),
@@ -31,45 +30,12 @@ export default function SignUpPage() {
   return (
     <main className="min-h-screen bg-white flex items-center justify-center px-4">
       <div className="w-full max-w-md rounded-2xl border border-gray-200 p-6 shadow-sm">
-        <h1 className="text-2xl font-semibold text-[#769FCD]">Sign Up</h1>
+        <h1 className="text-2xl font-semibold text-[#769FCD]">Login</h1>
         <p className="mt-2 text-sm text-gray-500">
           Please enter your details
         </p>
 
         <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
-          <div className="space-y-2">
-            <label
-              htmlFor="organisation-name"
-              className="text-sm font-medium text-gray-700"
-            >
-              Organisation
-            </label>
-            <input
-              id="organisation-name"
-              name="organisation"
-              type="text"
-              required
-              placeholder="Organization name"
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[#769FCD] focus:ring-2 focus:ring-[#769FCD]/40"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label
-              htmlFor="employee-name"
-              className="text-sm font-medium text-gray-700"
-            >
-              Name
-            </label>
-            <input
-              id="employee-name"
-              name="fullName"
-              type="text"
-              required
-              placeholder="Enter your name"
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[#769FCD] focus:ring-2 focus:ring-[#769FCD]/40"
-            />
-          </div>
 
           <div className="space-y-2">
             <label htmlFor="email" className="text-sm font-medium text-gray-700">
@@ -111,13 +77,21 @@ export default function SignUpPage() {
               At least 8 characters
             </p>
           </div>
+          <div className="text-right">
+            <Link
+              href="/forgot-password"
+              className="text-xs text-[#769FCD] hover:underline"
+            >
+              Forgot password?
+            </Link>
+          </div>
 
         
           <button
             type="submit"
             className="w-full rounded-lg bg-[#769FCD] px-4 py-2 text-sm font-medium text-white hover:bg-[#6a91c1]"
           >
-            Create account
+            Login
           </button>
           <p className="text-center text-xs text-gray-500">
             By continuing, you agree to our{" "}
