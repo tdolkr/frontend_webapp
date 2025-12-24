@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import AuthFormLayout from "@/components/AuthFormLayout";
+import { api } from "@/lib/api";
 
 export default function LoginPage() {
   const [password, setPassword] = useState("");
@@ -14,17 +15,17 @@ export default function LoginPage() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
 
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: formData.get("email"),
-        password: formData.get("password"),
-      }),
-    });
-
-    if (response.ok) {
+    try {
+      await api("/api/auth/login", {
+        method: "POST",
+        body: JSON.stringify({
+          email: formData.get("email"),
+          password: formData.get("password"),
+        }),
+      });
       router.push("/visa-officer");
+    } catch (error) {
+      console.error(error);
     }
   }
 

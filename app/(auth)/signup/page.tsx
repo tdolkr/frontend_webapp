@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { api } from "@/lib/api";
 import AuthFormLayout from "@/components/AuthFormLayout";
 
 export default function SignUpPage() {
@@ -13,19 +14,19 @@ export default function SignUpPage() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
 
-    const response = await fetch("/api/auth/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        organisation: formData.get("organisation"),
-        fullName: formData.get("fullName"),
-        email: formData.get("email"),
-        password: formData.get("password"),
-      }),
-    });
-
-    if (response.ok) {
+    try {
+      await api("/api/auth/signup", {
+        method: "POST",
+        body: JSON.stringify({
+          organisation: formData.get("organisation"),
+          fullName: formData.get("fullName"),
+          email: formData.get("email"),
+          password: formData.get("password"),
+        }),
+      });
       router.push("/verify");
+    } catch (error) {
+      console.error(error);
     }
   }
 

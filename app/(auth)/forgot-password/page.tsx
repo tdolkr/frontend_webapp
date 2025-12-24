@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import AuthFormLayout from "@/components/AuthFormLayout";
+import { api } from "@/lib/api";
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
@@ -10,13 +11,18 @@ export default function ForgotPasswordPage() {
     event.preventDefault();
 
     // call API here
-    const response = await fetch("/api/auth/forgot-password", {
-      method: "POST",
-      body: new FormData(event.currentTarget),
-    });
+    const formData = new FormData(event.currentTarget);
 
-    if (response.ok) {
+    try {
+      await api("/api/auth/forgot-password", {
+        method: "POST",
+        body: JSON.stringify({
+          email: formData.get("email"),
+        }),
+      });
       router.push("/otp");
+    } catch (error) {
+      console.error(error);
     }
   }
   return (
