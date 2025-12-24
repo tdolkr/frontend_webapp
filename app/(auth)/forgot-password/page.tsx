@@ -10,7 +10,6 @@ export default function ForgotPasswordPage() {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    // call API here
     const formData = new FormData(event.currentTarget);
 
     try {

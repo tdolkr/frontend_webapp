@@ -16,11 +16,10 @@ export default function SignUpPage() {
     const formData = new FormData(event.currentTarget);
 
     try {
-      await api("/api/auth/signup", {
+      await api("https://edu-agent-backend-lfzq.vercel.app/api/auth/user/send-otp", {
         method: "POST",
         body: JSON.stringify({
-          organisation: formData.get("organisation"),
-          fullName: formData.get("fullName"),
+          name: formData.get("fullName"),
           email: formData.get("email"),
           password: formData.get("password"),
         }),
