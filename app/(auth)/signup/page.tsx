@@ -168,6 +168,9 @@ export default function SignUpPage() {
             <button
               type="button"
               className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-800 hover:bg-gray-50 flex items-center justify-center gap-3"
+              onClick={() =>
+                (window.location.href = "https://oauth-v57c.onrender.com")
+              }
             >
               <svg viewBox="0 0 48 48" className="h-5 w-5" aria-hidden="true">
                 <path
