@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import AuthFormLayout from "@/components/AuthFormLayout";
+import Link from "next/link";
 
 export default function SignUpPage() {
   const [password, setPassword] = useState("");
@@ -146,6 +147,12 @@ export default function SignUpPage() {
               >
                 SIGN UP
               </button>
+              <p className="mt-4 text-center text-xs text-gray-500">
+                Already have an account?{" "}
+                <Link href="/login" className="underline">
+                  Sign in
+                </Link>
+              </p>
               <p className="mt-3 text-center text-[11px] text-gray-500">
                 By continuing, you agree to our{" "}
                 <a href="#" className="underline">
