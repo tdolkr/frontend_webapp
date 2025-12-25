@@ -84,11 +84,14 @@ export default function OtpVerification({
         method: "POST",
         body: payload ? JSON.stringify(payload) : undefined,
       });
-      setSecondsLeft(59);
+    setSecondsLeft(60);
       setInfoMessage("A new code was sent.");
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Failed to resend code.";
+      if (message.toLowerCase().includes("please wait 60s before resending")) {
+        return;
+      }
       setErrorMessage(message);
     }
   }

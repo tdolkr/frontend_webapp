@@ -5,18 +5,21 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import AuthFormLayout from "@/components/AuthFormLayout";
 import { api } from "@/lib/api";
+import { ENDPOINTS } from "@/lib/endpoints";
 
 export default function LoginPage() {
   const [password, setPassword] = useState("");
   const isPasswordLongEnough = password.length >= 8;
+  const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
+    setErrorMessage("");
 
     try {
-      await api("/api/auth/login", {
+      await api(ENDPOINTS.auth.login, {
         method: "POST",
         body: JSON.stringify({
           email: formData.get("email"),
@@ -25,7 +28,9 @@ export default function LoginPage() {
       });
       router.push("/visa-officer");
     } catch (error) {
-      console.error(error);
+      const message =
+        error instanceof Error ? error.message : "Failed to sign in.";
+      setErrorMessage(message);
     }
   }
 
@@ -107,7 +112,7 @@ export default function LoginPage() {
           type="button"
           className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-800 hover:bg-gray-50 flex items-center justify-center gap-3"
           onClick={() =>
-            (window.location.href = "https://edu-agent-backendapi.vercel.app/api/auth/user/")
+            (window.location.href = "https://o-auth-three.vercel.app")
           }
         >
           <svg viewBox="0 0 48 48" className="h-5 w-5" aria-hidden="true">
@@ -137,6 +142,10 @@ export default function LoginPage() {
         >
           SIGN IN
         </button>
+
+        {errorMessage ? (
+          <p className="text-center text-xs text-red-500">{errorMessage}</p>
+        ) : null}
 
         <p className="text-center text-[11px] text-gray-500">
           By continuing, you agree to our{" "}

@@ -1,6 +1,7 @@
 export const ENDPOINTS = {
   auth: {
     signupSendOtp: "/api/auth/user/send-otp",
+    login: "/api/auth/user/login",
     verifyEmailOtp: "/api/auth/user/verify-otp",
     resendEmailOtp: "/api/auth/user/resend-otp",
     passwordResetSendOtp: "/api/auth/user/password-reset/send-otp",
