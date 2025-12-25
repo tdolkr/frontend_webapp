@@ -26,7 +26,13 @@ export default function OtpPage() {
       resendEndpoint={RESEND_PASSWORD_OTP_ENDPOINT}
       otpLength={4}
       email={email || undefined}
-      onVerified={() => {
+      onVerified={(data) => {
+        if (data && typeof data === "object" && "resetToken" in data) {
+          const token = (data as { resetToken?: string }).resetToken;
+          if (typeof token === "string") {
+            sessionStorage.setItem("resetToken", token);
+          }
+        }
         sessionStorage.removeItem("pendingEmail");
         router.push("/reset-password");
       }}

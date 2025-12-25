@@ -14,12 +14,15 @@ export default function ForgotPasswordPage() {
     const email = formData.get("email");
 
     try {
-      await api("/api/auth/forgot-password", {
+      await api(
+        "https://edu-agent-backend-lfzq.vercel.app/api/auth/user/password-reset/send-otp",
+        {
         method: "POST",
         body: JSON.stringify({
           email,
         }),
-      });
+      }
+      );
       if (typeof window !== "undefined" && typeof email === "string") {
         sessionStorage.setItem("pendingEmail", email);
       }

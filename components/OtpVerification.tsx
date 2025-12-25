@@ -21,7 +21,7 @@ type OtpVerificationProps = {
   resendEndpoint?: string;
   email?: string;
   resendPayload?: Record<string, unknown>;
-  onVerified?: () => void;
+  onVerified?: (data?: unknown) => void;
 };
 
 export default function OtpVerification({
@@ -165,12 +165,12 @@ export default function OtpVerification({
     };
 
     try {
-      await api(verifyEndpoint, {
+      const data = await api(verifyEndpoint, {
         method: "POST",
         body: JSON.stringify(payload),
       });
       setInfoMessage("Verification successful.");
-      onVerified?.();
+      onVerified?.(data);
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Verification failed.";

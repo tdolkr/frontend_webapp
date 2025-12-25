@@ -1,12 +1,72 @@
+"use client";
+
+import { useEffect, useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import AuthFormLayout from "@/components/AuthFormLayout";
+import { api } from "@/lib/api";
 
 export default function ResetPasswordPage() {
+  const [resetToken, setResetToken] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    setResetToken(sessionStorage.getItem("resetToken") ?? "");
+  }, []);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setErrorMessage("");
+
+    const formData = new FormData(event.currentTarget);
+    const newPassword = formData.get("newPassword");
+    const confirmPassword = formData.get("confirmPassword");
+
+    if (typeof newPassword !== "string" || typeof confirmPassword !== "string") {
+      setErrorMessage("Enter a new password.");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setErrorMessage("Passwords do not match.");
+      return;
+    }
+
+    if (!resetToken) {
+      setErrorMessage("Reset token is missing. Please request a new OTP.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await api(
+        "https://edu-agent-backend-lfzq.vercel.app/api/auth/user/password-reset/set-new",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            resetToken,
+            newPassword,
+          }),
+        }
+      );
+      sessionStorage.removeItem("resetToken");
+      router.push("/login");
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Failed to reset password.";
+      setErrorMessage(message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   return (
     <AuthFormLayout
       title="Create New Password"
       description="Create a new password for your account."
     >
-      <form className="mt-6 space-y-4">
+      <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
         <div className="space-y-2">
           <label
             htmlFor="new-password"
@@ -43,11 +103,16 @@ export default function ResetPasswordPage() {
           />
         </div>
 
+        {errorMessage ? (
+          <p className="text-center text-xs text-red-500">{errorMessage}</p>
+        ) : null}
+
         <button
           type="submit"
-          className="w-full rounded-lg bg-[#769FCD] px-4 py-2 text-sm font-medium text-white hover:bg-[#6a91c1]"
+          className="w-full rounded-lg bg-[#769FCD] px-4 py-2 text-sm font-medium text-white hover:bg-[#6a91c1] disabled:cursor-not-allowed disabled:opacity-70"
+          disabled={isSubmitting}
         >
-          Update password
+          {isSubmitting ? "Updating..." : "Update password"}
         </button>
       </form>
     </AuthFormLayout>
