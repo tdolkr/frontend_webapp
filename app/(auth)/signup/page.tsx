@@ -11,28 +11,44 @@ export default function SignUpPage() {
   const isPasswordLongEnough = password.length >= 8;
   const router = useRouter();
 
+  
+  // Function to handle the submit of the send-otp
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
 
-    try {
-      await api("https://edu-agent-backend-lfzq.vercel.app/api/auth/user/send-otp", {
-        method: "POST",
-        body: JSON.stringify({
-          name: formData.get("fullName"),
-          email: formData.get("email"),
-          password: formData.get("password"),
-        }),
-      });
-      router.push("/verify");
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "";
-      if (message.toLowerCase().includes("otp already sent")) {
-        router.push("/verify");
-        return;
-      }
-      console.error(error);
+    //request to be inserted inside the code
+    const payload = {
+    name: formData.get("fullName"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+  };
+  console.log(payload)
+
+  //try and catch method to get the api for the send otp
+  try{
+    //calling the backend using api function
+    await api("https://edu-agent-backend-lfzq.vercel.app/api/auth/user/send-otp",{
+      method: "POST",
+      body: JSON.stringify(payload)
+    })
+    //Storing the email on the session storage
+    sessionStorage.setItem(
+      "otpEmail",
+      String(payload.email)
+    );
+    alert(`Otp send to the ${formData.get("email")}`);
+    //success message to go the verify page
+    router.push('/verify');
+
+  }catch(e: unknown){
+    if (e instanceof Error){
+      alert(e.message);
     }
+    else{
+      alert("something went wrong");
+    }
+  }
   }
 
   return (

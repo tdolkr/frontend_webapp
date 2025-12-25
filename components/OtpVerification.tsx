@@ -63,6 +63,8 @@ export default function OtpVerification({
     setOtpValues(Array.from({ length: otpLength }, () => ""));
   }, [otpLength]);
 
+
+  //Handling the resend otp
   async function handleResend() {
     if (!canResend) {
       return;
@@ -75,6 +77,7 @@ export default function OtpVerification({
     setErrorMessage("");
     setInfoMessage("");
 
+    //Payload
     const payload = email ? { email } : undefined;
 
     try {
@@ -83,11 +86,11 @@ export default function OtpVerification({
         body: payload ? JSON.stringify(payload) : undefined,
       });
       setSecondsLeft(59);
-      setInfoMessage("A new code was sent.");
+      alert(`A new code was sent to ${email}`);
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Failed to resend code.";
-      setErrorMessage(message);
+      alert(message);
     }
   }
 
@@ -146,33 +149,34 @@ export default function OtpVerification({
     inputRefs.current[nextIndex]?.focus();
   }
 
+  // Handle the verify otp api
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setErrorMessage("");
-    setInfoMessage("");
 
     if (!isOtpComplete) {
-      setErrorMessage(`Enter the ${otpLength}-digit code.`);
+      alert(`Enter the ${otpLength}-digit code.`)
       return;
     }
-
     setIsSubmitting(true);
+
+    //Payload to for the request
     const payload = {
       otp: otpValue,
       ...(email ? { email } : {}),
     };
 
+    //Api function to get the end point
     try {
       await api(verifyEndpoint, {
         method: "POST",
         body: JSON.stringify(payload),
       });
-      setInfoMessage("Verification successful.");
+      alert("Verification successful.");
       onVerified?.();
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Verification failed.";
-      setErrorMessage(message);
+      alert(message);
     } finally {
       setIsSubmitting(false);
     }
