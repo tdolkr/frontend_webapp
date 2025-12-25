@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import OtpVerification from "@/components/OtpVerification";
 
@@ -10,6 +11,11 @@ const RESEND_PASSWORD_OTP_ENDPOINT =
 
 export default function OtpPage() {
   const router = useRouter();
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    setEmail(sessionStorage.getItem("pendingEmail") ?? "");
+  }, []);
 
   return (
     <OtpVerification
@@ -19,7 +25,11 @@ export default function OtpPage() {
       verifyEndpoint={VERIFY_PASSWORD_OTP_ENDPOINT}
       resendEndpoint={RESEND_PASSWORD_OTP_ENDPOINT}
       otpLength={4}
-      onVerified={() => router.push("/reset-password")}
+      email={email || undefined}
+      onVerified={() => {
+        sessionStorage.removeItem("pendingEmail");
+        router.push("/reset-password");
+      }}
     />
   );
 }

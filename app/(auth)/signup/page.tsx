@@ -14,20 +14,51 @@ export default function SignUpPage() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
+    const email = formData.get("email");
+    const name = formData.get("fullName");
+    const password = formData.get("password");
 
     try {
       await api("https://edu-agent-backend-lfzq.vercel.app/api/auth/user/send-otp", {
         method: "POST",
         body: JSON.stringify({
-          name: formData.get("fullName"),
-          email: formData.get("email"),
-          password: formData.get("password"),
+          name,
+          email,
+          password,
         }),
       });
+      if (typeof window !== "undefined" && typeof email === "string") {
+        sessionStorage.setItem("pendingEmail", email);
+      }
+      if (
+        typeof window !== "undefined" &&
+        typeof name === "string" &&
+        typeof password === "string" &&
+        typeof email === "string"
+      ) {
+        sessionStorage.setItem(
+          "pendingSignup",
+          JSON.stringify({ name, email, password })
+        );
+      }
       router.push("/verify");
     } catch (error) {
       const message = error instanceof Error ? error.message : "";
       if (message.toLowerCase().includes("otp already sent")) {
+        if (typeof window !== "undefined" && typeof email === "string") {
+          sessionStorage.setItem("pendingEmail", email);
+        }
+        if (
+          typeof window !== "undefined" &&
+          typeof name === "string" &&
+          typeof password === "string" &&
+          typeof email === "string"
+        ) {
+          sessionStorage.setItem(
+            "pendingSignup",
+            JSON.stringify({ name, email, password })
+          );
+        }
         router.push("/verify");
         return;
       }

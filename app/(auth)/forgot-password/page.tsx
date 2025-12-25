@@ -11,14 +11,18 @@ export default function ForgotPasswordPage() {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
+    const email = formData.get("email");
 
     try {
       await api("/api/auth/forgot-password", {
         method: "POST",
         body: JSON.stringify({
-          email: formData.get("email"),
+          email,
         }),
       });
+      if (typeof window !== "undefined" && typeof email === "string") {
+        sessionStorage.setItem("pendingEmail", email);
+      }
       router.push("/otp");
     } catch (error) {
       console.error(error);

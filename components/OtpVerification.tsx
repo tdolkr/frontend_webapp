@@ -20,6 +20,7 @@ type OtpVerificationProps = {
   verifyEndpoint: string;
   resendEndpoint?: string;
   email?: string;
+  resendPayload?: Record<string, unknown>;
   onVerified?: () => void;
 };
 
@@ -33,6 +34,7 @@ export default function OtpVerification({
   verifyEndpoint,
   resendEndpoint,
   email,
+  resendPayload,
   onVerified,
 }: OtpVerificationProps) {
   const [secondsLeft, setSecondsLeft] = useState(initialResendSeconds);
@@ -75,7 +77,7 @@ export default function OtpVerification({
     setErrorMessage("");
     setInfoMessage("");
 
-    const payload = email ? { email } : undefined;
+    const payload = resendPayload ?? (email ? { email } : undefined);
 
     try {
       await api(resendEndpoint, {
