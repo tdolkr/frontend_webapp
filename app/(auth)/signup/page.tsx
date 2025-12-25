@@ -26,6 +26,11 @@ export default function SignUpPage() {
       });
       router.push("/verify");
     } catch (error) {
+      const message = error instanceof Error ? error.message : "";
+      if (message.toLowerCase().includes("otp already sent")) {
+        router.push("/verify");
+        return;
+      }
       console.error(error);
     }
   }
