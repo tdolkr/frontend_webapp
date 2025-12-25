@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
+import { ENDPOINTS } from "@/lib/endpoints";
 import AuthFormLayout from "@/components/AuthFormLayout";
 import Link from "next/link";
 
@@ -19,7 +20,7 @@ export default function SignUpPage() {
     const password = formData.get("password");
 
     try {
-      await api("https://edu-agent-backend-lfzq.vercel.app/api/auth/user/send-otp", {
+      await api(ENDPOINTS.auth.signupSendOtp, {
         method: "POST",
         body: JSON.stringify({
           name,
@@ -29,17 +30,7 @@ export default function SignUpPage() {
       });
       if (typeof window !== "undefined" && typeof email === "string") {
         sessionStorage.setItem("pendingEmail", email);
-      }
-      if (
-        typeof window !== "undefined" &&
-        typeof name === "string" &&
-        typeof password === "string" &&
-        typeof email === "string"
-      ) {
-        sessionStorage.setItem(
-          "pendingSignup",
-          JSON.stringify({ name, email, password })
-        );
+        sessionStorage.setItem("otpSent", "1");
       }
       router.push("/verify");
     } catch (error) {
@@ -47,17 +38,7 @@ export default function SignUpPage() {
       if (message.toLowerCase().includes("otp already sent")) {
         if (typeof window !== "undefined" && typeof email === "string") {
           sessionStorage.setItem("pendingEmail", email);
-        }
-        if (
-          typeof window !== "undefined" &&
-          typeof name === "string" &&
-          typeof password === "string" &&
-          typeof email === "string"
-        ) {
-          sessionStorage.setItem(
-            "pendingSignup",
-            JSON.stringify({ name, email, password })
-          );
+          sessionStorage.setItem("otpSent", "1");
         }
         router.push("/verify");
         return;

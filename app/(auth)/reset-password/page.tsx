@@ -4,6 +4,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import AuthFormLayout from "@/components/AuthFormLayout";
 import { api } from "@/lib/api";
+import { ENDPOINTS } from "@/lib/endpoints";
 
 export default function ResetPasswordPage() {
   const [resetToken, setResetToken] = useState("");
@@ -40,16 +41,13 @@ export default function ResetPasswordPage() {
 
     setIsSubmitting(true);
     try {
-      await api(
-        "https://edu-agent-backend-lfzq.vercel.app/api/auth/user/password-reset/set-new",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            resetToken,
-            newPassword,
-          }),
-        }
-      );
+      await api(ENDPOINTS.auth.passwordResetSetNew, {
+        method: "POST",
+        body: JSON.stringify({
+          resetToken,
+          newPassword,
+        }),
+      });
       sessionStorage.removeItem("resetToken");
       router.push("/login");
     } catch (error) {

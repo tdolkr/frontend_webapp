@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import AuthFormLayout from "@/components/AuthFormLayout";
 import { api } from "@/lib/api";
+import { ENDPOINTS } from "@/lib/endpoints";
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
@@ -14,17 +15,15 @@ export default function ForgotPasswordPage() {
     const email = formData.get("email");
 
     try {
-      await api(
-        "https://edu-agent-backend-lfzq.vercel.app/api/auth/user/password-reset/send-otp",
-        {
+      await api(ENDPOINTS.auth.passwordResetSendOtp, {
         method: "POST",
         body: JSON.stringify({
           email,
         }),
-      }
-      );
+      });
       if (typeof window !== "undefined" && typeof email === "string") {
         sessionStorage.setItem("pendingEmail", email);
+        sessionStorage.setItem("otpSent", "1");
       }
       router.push("/otp");
     } catch (error) {

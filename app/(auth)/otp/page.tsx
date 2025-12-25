@@ -3,11 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import OtpVerification from "@/components/OtpVerification";
-
-const VERIFY_PASSWORD_OTP_ENDPOINT =
-  "https://edu-agent-backend-lfzq.vercel.app/api/auth/user/password-reset/verify-otp";
-const RESEND_PASSWORD_OTP_ENDPOINT =
-  "https://edu-agent-backend-lfzq.vercel.app/api/auth/user/password-reset/send-otp";
+import { ENDPOINTS } from "@/lib/endpoints";
 
 export default function OtpPage() {
   const router = useRouter();
@@ -15,6 +11,11 @@ export default function OtpPage() {
 
   useEffect(() => {
     setEmail(sessionStorage.getItem("pendingEmail") ?? "");
+    const otpSent = sessionStorage.getItem("otpSent");
+    if (otpSent) {
+      window.alert("OTP sent.");
+      sessionStorage.removeItem("otpSent");
+    }
   }, []);
 
   return (
@@ -22,8 +23,8 @@ export default function OtpPage() {
       title="Verify OTP"
       description="Enter the code sent to your email."
       showTerms
-      verifyEndpoint={VERIFY_PASSWORD_OTP_ENDPOINT}
-      resendEndpoint={RESEND_PASSWORD_OTP_ENDPOINT}
+      verifyEndpoint={ENDPOINTS.auth.passwordResetVerifyOtp}
+      resendEndpoint={ENDPOINTS.auth.passwordResetSendOtp}
       otpLength={4}
       email={email || undefined}
       onVerified={(data) => {
