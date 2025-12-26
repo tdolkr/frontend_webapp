@@ -19,17 +19,41 @@ export default function LoginPage() {
     setErrorMessage("");
 
     try {
-      await api(ENDPOINTS.auth.login, {
+      const data = await api(ENDPOINTS.auth.login, {
         method: "POST",
         body: JSON.stringify({
           email: formData.get("email"),
           password: formData.get("password"),
         }),
       });
+      if (
+        typeof window !== "undefined" &&
+        data &&
+        typeof data === "object" &&
+        "accessToken" in data
+      ) {
+        const token = (data as { accessToken?: string }).accessToken;
+        if (typeof token === "string") {
+          document.cookie = `accessToken=${token}; Path=/; SameSite=Lax`;
+        }
+      }
       router.push("/visa-officer");
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Failed to sign in.";
+      const normalized = message.toLowerCase();
+      if (normalized.includes("request failed (401)")) {
+        setErrorMessage("Incorrect password.");
+        return;
+      }
+      if (normalized.includes("request failed (404)")) {
+        setErrorMessage("Account not found.");
+        return;
+      }
+      if (normalized.includes("request failed (500)")) {
+        setErrorMessage("Server error. Please try again.");
+        return;
+      }
       setErrorMessage(message);
     }
   }

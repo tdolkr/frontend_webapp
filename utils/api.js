@@ -1,4 +1,4 @@
-const BASE_URL = "https://edu-agent-backendapi.vercel.app/api/auth";
+const BASE_URL = "https://edu-agent-backend-bplxyxizo-dendups-projects.vercel.app/api/auth";
 
 // Send OTP
 export const sendOTP = async (email) => {

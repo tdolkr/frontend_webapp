@@ -119,7 +119,24 @@ export default function SignUpPage() {
                 name="email"
                 type="email"
                 required
-                placeholder="jane@email.com"
+                placeholder="Enter your email"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-[#769FCD] focus:ring-2 focus:ring-[#769FCD]/30 bg-white"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label
+                htmlFor="phone"
+                className="text-sm font-medium text-gray-700"
+              >
+                Phone Number
+              </label>
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                required
+                placeholder="Enter Your Phone Number"
                 className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-[#769FCD] focus:ring-2 focus:ring-[#769FCD]/30 bg-white"
               />
             </div>
@@ -137,7 +154,7 @@ export default function SignUpPage() {
                 type="password"
                 required
                 minLength={8}
-                placeholder="••••••••"
+                placeholder="Enter your password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-[#769FCD] focus:ring-2 focus:ring-[#769FCD]/30 bg-white"
