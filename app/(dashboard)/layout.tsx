@@ -1,4 +1,5 @@
 import SideBar from "@/components/SideBar";
+import TopNav from "@/components/TopNav";
 
 export default function DashboardLayout({
   children,
@@ -8,7 +9,10 @@ export default function DashboardLayout({
   return (
     <main className="min-h-screen bg-white flex">
       <SideBar role="visa-officer" />
-      <section className="flex-1 px-6 py-8">{children}</section>
+      <section className="flex-1 bg-[#F7FBFC]">
+        <TopNav />
+        <div className="px-6 py-8">{children}</div>
+      </section>
     </main>
   );
 }

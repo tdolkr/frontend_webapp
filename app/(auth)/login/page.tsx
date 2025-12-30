@@ -26,18 +26,17 @@ export default function LoginPage() {
           password: formData.get("password"),
         }),
       });
-      if (
-        typeof window !== "undefined" &&
-        data &&
-        typeof data === "object" &&
-        "accessToken" in data
-      ) {
+      if (typeof window !== "undefined" && data && typeof data === "object") {
         const token = (data as { accessToken?: string }).accessToken;
         if (typeof token === "string") {
           document.cookie = `accessToken=${token}; Path=/; SameSite=Lax`;
         }
+        const name = (data as { user?: { name?: string } }).user?.name;
+        if (typeof name === "string") {
+          sessionStorage.setItem("userName", name);
+        }
       }
-      router.push("/visa-officer");
+      router.push("/visa-officer/dashboard");
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Failed to sign in.";
@@ -136,7 +135,7 @@ export default function LoginPage() {
           type="button"
           className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-800 hover:bg-gray-50 flex items-center justify-center gap-3"
           onClick={() =>
-            (window.location.href = "https://o-auth-three.vercel.app")
+            (window.location.href = "https://edu-agent-backend-bplxyxizo-dendups-projects.vercel.app")
           }
         >
           <svg viewBox="0 0 48 48" className="h-5 w-5" aria-hidden="true">

@@ -15,7 +15,7 @@ type SideBarItem = {
 const sidebarItems: Record<SideBarRole, SideBarItem[]> = {
   "visa-officer": [
     {
-      href: "/visa-officer",
+      href: "/visa-officer/dashboard",
       label: "Dashboard",
       icon: (
         <svg className="h-6 w-6" viewBox="0 0 18 18" aria-hidden="true">
@@ -27,7 +27,7 @@ const sidebarItems: Record<SideBarRole, SideBarItem[]> = {
       ),
     },
     {
-      href: "/students",
+      href: "/visa-officer/student-list",
       label: "Student List",
       icon: (
         <svg className="h-6 w-6" viewBox="0 0 18 18" aria-hidden="true">
@@ -40,12 +40,15 @@ const sidebarItems: Record<SideBarRole, SideBarItem[]> = {
       ),
     },
     {
-      href: "/documents",
+      href: "/visa-officer/documents",
       label: "Documents",
       icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M0 5.45455V0H6V2.18182H2.4V5.45455H0ZM21.6 5.45455V2.18182H18V0H24V5.45455H21.6ZM0 24V18.5455H2.4V21.8182H6V24H0ZM18 24V21.8182H21.6V18.5455H24V24H18ZM6 18.5455H18V5.45455H6V18.5455ZM6 20.7273C5.34 20.7273 4.775 20.5136 4.305 20.0864C3.835 19.6591 3.6 19.1455 3.6 18.5455V5.45455C3.6 4.85455 3.835 4.34091 4.305 3.91364C4.775 3.48636 5.34 3.27273 6 3.27273H18C18.66 3.27273 19.225 3.48636 19.695 3.91364C20.165 4.34091 20.4 4.85455 20.4 5.45455V18.5455C20.4 19.1455 20.165 19.6591 19.695 20.0864C19.225 20.5136 18.66 20.7273 18 20.7273H6ZM8.4 9.81818H15.6V7.63636H8.4V9.81818ZM8.4 13.0909H15.6V10.9091H8.4V13.0909ZM8.4 16.3636H15.6V14.1818H8.4V16.3636Z" fill="#B9D7EA"/>
-</svg>
+        <svg className="h-6 w-6" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            fill="currentColor"
+            d="M0 5.45455V0H6V2.18182H2.4V5.45455H0ZM21.6 5.45455V2.18182H18V0H24V5.45455H21.6ZM0 24V18.5455H2.4V21.8182H6V24H0ZM18 24V21.8182H21.6V18.5455H24V24H18ZM6 18.5455H18V5.45455H6V18.5455ZM6 20.7273C5.34 20.7273 4.775 20.5136 4.305 20.0864C3.835 19.6591 3.6 19.1455 3.6 18.5455V5.45455C3.6 4.85455 3.835 4.34091 4.305 3.91364C4.775 3.48636 5.34 3.27273 6 3.27273H18C18.66 3.27273 19.225 3.48636 19.695 3.91364C20.165 4.34091 20.4 4.85455 20.4 5.45455V18.5455C20.4 19.1455 20.165 19.6591 19.695 20.0864C19.225 20.5136 18.66 20.7273 18 20.7273H6ZM8.4 9.81818H15.6V7.63636H8.4V9.81818ZM8.4 13.0909H15.6V10.9091H8.4V13.0909ZM8.4 16.3636H15.6V14.1818H8.4V16.3636Z"
+          />
+        </svg>
 
       ),
     },

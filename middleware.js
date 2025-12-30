@@ -12,5 +12,5 @@ export function middleware(request) {
 }
 
 export const config = {
-    matcher: ['/visa-officer', '/admin', '/mentor', '/overall-agent', '/admission-officer']
+    matcher: ['/visa-officer/:path*', '/admin', '/mentor', '/overall-agent', '/admission-officer']
 }

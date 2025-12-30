@@ -18,6 +18,8 @@ export default function SignUpPage() {
     const email = formData.get("email");
     const name = formData.get("fullName");
     const password = formData.get("password");
+    const organizationName = formData.get("organisation");
+    const contactInfo = formData.get("phone");
 
     try {
       await api(ENDPOINTS.auth.signupSendOtp, {
@@ -26,6 +28,8 @@ export default function SignUpPage() {
           name,
           email,
           password,
+          organizationName,
+          contactInfo,
         }),
       });
       if (typeof window !== "undefined" && typeof email === "string") {
@@ -209,7 +213,7 @@ export default function SignUpPage() {
               type="button"
               className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-800 hover:bg-gray-50 flex items-center justify-center gap-3"
               onClick={() =>
-                (window.location.href = "https://o-auth-three.vercel.app")
+                (window.location.href = "https://edu-agent-backend-bplxyxizo-dendups-projects.vercel.app")
               }
             >
               <svg viewBox="0 0 48 48" className="h-5 w-5" aria-hidden="true">
