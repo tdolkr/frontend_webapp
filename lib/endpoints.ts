@@ -10,6 +10,7 @@ export const ENDPOINTS = {
     passwordResetVerifyOtp: "/api/v1/agency/password-reset/verify-otp",
     passwordResetSetNew: "/api/v1/agency/password-reset/set-new",
     getProfile: "/api/v1/agency/profile",
+    googleSigninAgency: "/google-signin-agency",
 
   },
 };

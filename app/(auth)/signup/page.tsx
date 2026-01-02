@@ -6,6 +6,7 @@ import { api } from "@/lib/api";
 import { ENDPOINTS } from "@/lib/endpoints";
 import AuthFormLayout from "@/components/AuthFormLayout";
 import Link from "next/link";
+import { GoogleLogin } from "@react-oauth/google";
 
 export default function SignUpPage() {
   const [password, setPassword] = useState("");
@@ -48,6 +49,35 @@ export default function SignUpPage() {
         router.push("/verify");
         return;
       }
+    }
+  }
+
+  async function handleGoogleSuccess(credentialResponse: {
+    credential?: string;
+  }) {
+    const token = credentialResponse.credential;
+
+    if (!token) {
+      return;
+    }
+
+    try {
+      const data = await api(ENDPOINTS.auth.googleSigninAgency, {
+        method: "POST",
+        body: JSON.stringify({
+          token,
+          credential: token,
+          id_token: token,
+        }),
+      });
+      const accessToken =
+        data?.accessToken || data?.token || data?.data?.accessToken;
+      if (typeof accessToken === "string") {
+        document.cookie = `accessToken=${accessToken}; Path=/; SameSite=Lax`;
+      }
+      router.push("/visa-officer/dashboard");
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -209,33 +239,14 @@ export default function SignUpPage() {
               <div className="h-px flex-1 bg-gray-300" />
             </div>
 
-            <button
-              type="button"
-              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-800 hover:bg-gray-50 flex items-center justify-center gap-3"
-              onClick={() =>
-                (window.location.href = "https://edu-agent-backend-bplxyxizo-dendups-projects.vercel.app")
-              }
-            >
-              <svg viewBox="0 0 48 48" className="h-5 w-5" aria-hidden="true">
-                <path
-                  fill="#EA4335"
-                  d="M24 9.5c3.7 0 6.2 1.6 7.6 2.9l5.2-5.2C33.8 4.1 29.3 2 24 2 14.7 2 6.7 7.4 3 15.2l6.4 5c1.7-5.1 6.5-8.7 14.6-8.7z"
-                />
-                <path
-                  fill="#4285F4"
-                  d="M46 24.5c0-1.6-.1-2.8-.4-4H24v7.6h12.6c-.3 2-1.8 5-5.1 7.1l6.2 4.8C42.7 36.3 46 30.9 46 24.5z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M9.4 28.2c-.4-1.1-.7-2.3-.7-3.7s.3-2.6.7-3.7l-6.4-5C1.2 18.2 0 21 0 24.5S1.2 30.8 3 33.2l6.4-5z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M24 46c5.3 0 9.8-1.8 13.1-4.9l-6.2-4.8c-1.7 1.2-4 2-6.9 2-5.4 0-10-3.6-11.6-8.6l-6.4 5C6.7 40.6 14.7 46 24 46z"
-                />
-              </svg>
-              Continue with Google
-            </button>
+            <div className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3">
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={() => console.error("Google login failed.")}
+                width="260"
+                useOneTap={false}
+              />
+            </div>
       </form>
     </AuthFormLayout>
   );
