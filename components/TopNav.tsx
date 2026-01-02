@@ -26,7 +26,7 @@ export default function TopNav() {
         const data = await api(ENDPOINTS.auth.getProfile, {
           method: "GET",
           headers: {
-            Authorization: token,
+            Authorization: `Bearer ${token}`,
           },
         });
         const profileName =

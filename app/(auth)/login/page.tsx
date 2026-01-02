@@ -20,13 +20,17 @@ export default function LoginPage() {
     setErrorMessage("");
 
     try {
-      await api(ENDPOINTS.auth.login, {
+      const data = await api(ENDPOINTS.auth.login, {
         method: "POST",
         body: JSON.stringify({
           email: formData.get("email"),
           password: formData.get("password"),
         }),
       });
+      const accessToken = data?.accessToken;
+      if (typeof accessToken === "string") {
+        document.cookie = `accessToken=${accessToken}; Path=/; SameSite=Lax`;
+      }
       router.push("/visa-officer/dashboard");
     } catch (error) {
       const message =
@@ -111,7 +115,10 @@ export default function LoginPage() {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="password" className="text-sm font-medium text-gray-700">
+          <label
+            htmlFor="password"
+            className="text-sm font-medium text-gray-700"
+          >
             Password
           </label>
           <input
